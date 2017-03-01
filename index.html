@@ -13,7 +13,27 @@
 </head>
 <body>
   <div class="container">
+    <form id="playForm">
+      <div class="form-group">
+        <label for="desiredXInput">Enter X Coordinate</label>
+        <input type="number" class="form-control" id="desiredXInput" required>
+      </div>
+      <div class="form-group">
+        <label for="">Enter Y Coordinate</label>
+        <input type="number" class="form-control" id="desiredYInput" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Go</button>
+    </form>
+    <div id="hiddenResults">
+      <div id="winnerDisplay">
 
+      </div>
+      <form id="playAgainForm">
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Play Again</button>
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 </html>
