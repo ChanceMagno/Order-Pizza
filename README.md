@@ -26,7 +26,9 @@ A web application to play tic tac toe...
 |Determine whose turn in the game it is|player1|Go!|
 |Execute the next turn of the game|player2: (2,1)-->"O"|marks space with coordinates 2,1 with symbol "O" and end player2 turn|
 |Determine whether someone won the game in the turn they just played|player2: (2,1)--->"O"|player2 wins!|
-|End the game if someone has won|player2 wins!|Game over|
+|End the game if someone has won|player2 wins!|Game over. Player2 wins!|
+|Determine whether the board is full|O,X,O;X,X,O;O,O,X|True|
+|End game if nobody won but the board is full|O,X,O;X,X,O;O,O,X|Game over. Draw.|
 |If game is over, find out whether a new game is desired|Play again?|Yes|
 |If a new game is desired, create a fresh game|Yes|new game initialized with empty board|
 |Determine whether one-player mode is selected|1 Player?|True|
