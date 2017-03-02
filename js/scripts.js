@@ -5,17 +5,34 @@ function draw(){
   var canvas = document.getElementById('board-canvas');
   console.log(canvas);
   var ctx = canvas.getContext('2d');
-  ctx.lineWidth=10;
-  ctx.strokeStyle = '#ff0000';
-
+  ctx.lineWidth=5;
+  ctx.strokeStyle = '#000000';
   drawCrossBars(300,300,ctx);
-  // ctx.beginPath();
- // 	ctx.moveTo(0, 0);
- // 	ctx.lineTo(0, 300);
- // 	ctx.lineTo(300, 300);
-  // ctx.lineTo(300, 0);
- // 	ctx.fillStyle = "rgba(0,0,0,1)";
- // 	ctx.fill();
+  // drawX(100,0, 300, 300, ctx);
+  drawO(100,0, 300, 300, ctx);
+  drawO(100,100, 300, 300, ctx);
+
+}
+
+function drawX (xCoordinate, yCoordinate, width, height, context){
+  // assumes x and y coordinates passed to this function define the upper lefthand corner of a square in the tic tac toe grid
+  context.beginPath();
+  context.moveTo(xCoordinate, yCoordinate);
+  context.lineTo(xCoordinate + width/3, yCoordinate + height/3);
+  context.moveTo(xCoordinate + width/3, yCoordinate);
+  context.lineTo(xCoordinate, yCoordinate + height/3);
+  context.stroke();
+}
+
+function drawO (xCoordinate, yCoordinate, width, height, context){
+  var centerX = xCoordinate + width/3/2;
+  var centerY = yCoordinate + height/3/2;
+  context.moveTo(centerX + width/3/2, centerY);
+  var radius = width/3/2;
+  startAngle = 0;
+  endAngle = 2 * Math.PI;
+  context.arc(centerX, centerY, radius, startAngle, endAngle);
+  context.stroke();
 }
 
 function drawCrossBars (width, height, context){
