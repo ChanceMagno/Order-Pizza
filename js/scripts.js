@@ -30,28 +30,29 @@ HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;
 
 
 function adjustXYtoUpperLeftOfGridSquare (x, y, width, height){
-  potentialXs = [0, width/3, 2*width/3];
-  potentialYs = [0, height/3, 2*height/3];
+  var potentialXs = [0, width/3, 2*width/3];
+  var potentialYs = [0, height/3, 2*height/3];
   var adjustedX = Math.max.apply(Math, potentialXs.filter(function(element){return element<= x}));
   var adjustedY = Math.max.apply(Math, potentialYs.filter(function(element){return element<=y}));
-  return {adjustedX: adjustedX, adjustedY: adjustedY};
+  return {x: adjustedX, y: adjustedY};
 }
 
 function drawX (xCoordinate, yCoordinate, width, height, context){
   // assumes x and y coordinates passed to this function define the upper lefthand corner of a square in the tic tac toe grid
+  var offset = 7;
   context.beginPath();
-  context.moveTo(xCoordinate, yCoordinate);
-  context.lineTo(xCoordinate + width/3, yCoordinate + height/3);
-  context.moveTo(xCoordinate + width/3, yCoordinate);
-  context.lineTo(xCoordinate, yCoordinate + height/3);
+  context.moveTo(xCoordinate + offset, yCoordinate + offset);
+  context.lineTo(xCoordinate - offset + width/3, yCoordinate - offset + height/3);
+  context.moveTo(xCoordinate - offset + width/3, yCoordinate + offset);
+  context.lineTo(xCoordinate + offset, yCoordinate -offset + height/3);
   context.stroke();
 }
 
 function drawO (xCoordinate, yCoordinate, width, height, context){
   var centerX = xCoordinate + width/3/2;
   var centerY = yCoordinate + height/3/2;
-  context.moveTo(centerX + width/3/2, centerY);
-  var radius = width/3/2;
+  var radius = width/3/2 * .87;
+  context.moveTo(centerX + radius, centerY);
   startAngle = 0;
   endAngle = 2 * Math.PI;
   context.arc(centerX, centerY, radius, startAngle, endAngle);
@@ -91,11 +92,15 @@ Game.prototype.reportCurrentPlayer = function(){
   }
 }
 
-Game.prototype.runTurn = function(desiredX, desiredY){
+Game.prototype.runTurn = function(canvas, context, coords, width, height){
 
   // mark a desired space with current player's symbol iff that space is available
-  if (this.currentBoard.find(desiredX, desiredY).isAvailable()){
-    this.currentBoard.find(desiredX, desiredY).mark(this.currentPlayer.symbol);
+  if (this.currentBoard.find(coords.x, coords.y).isAvailable()){
+    this.currentBoard.find(coords.x, coords.y).mark(this.currentPlayer.symbol);
+    console.log("got here");
+
+    // console.log(adjustedCoords);
+    drawShape(this.currentPlayer.symbol, coords, width, height, context);
     // assign current player to whichever player is not the current player
     if (this.currentPlayer === this.player1){
       this.currentPlayer = this.player2;
@@ -230,9 +235,9 @@ Board.prototype.find = function (xCoordinate, yCoordinate){
 
 function drawShape(symbol, coords, width, height, context){
   if(symbol === "X"){
-    drawX(coords.adjustedX, coords.adjustedY, width, height, context);
+    drawX(coords.x, coords.y, width, height, context);
   } else{
-    drawO(coords.adjustedX, coords.adjustedY, width, height, context);
+    drawO(coords.x, coords.y, width, height, context);
   }
 }
 
@@ -248,9 +253,8 @@ $(function(){
       var canvas = document.getElementById('board-canvas');
       var ctx = canvas.getContext('2d');
       coords = canvas.relMouseCoords(event);
-      adjustedCoords = adjustXYtoUpperLeftOfGridSquare(coords.x, coords.y, width, height);
-      drawShape(currentGame.currentPlayer.symbol, adjustedCoords, width, height, ctx);
-      currentGame.runTurn(adjustedCoords.adjustedX, adjustedCoords.adjustedY);
+      var adjustedCoords = adjustXYtoUpperLeftOfGridSquare(coords.x, coords.y, width, height);
+      currentGame.runTurn(canvas, ctx, adjustedCoords, width, height);
       if(currentGame.isOver()){
         $("#playDiv").hide();
         $("#hiddenResults h2").remove();

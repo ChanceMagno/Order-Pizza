@@ -2,6 +2,7 @@
   display: none;
 }
 
-#board-canvas {
-  align-items: center;
+body{
+  text-align: center;
+  margin-top: 3%;
 }
