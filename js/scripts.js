@@ -1,5 +1,6 @@
-//Canvas
+// Back End
 
+//Canvas
 window.onload = draw;
 function draw(){
   var canvas = document.getElementById('board-canvas');
@@ -9,9 +10,35 @@ function draw(){
   ctx.strokeStyle = '#000000';
   drawCrossBars(300,300,ctx);
   // drawX(100,0, 300, 300, ctx);
-  drawO(100,0, 300, 300, ctx);
-  drawO(100,100, 300, 300, ctx);
+  // drawO(100,0, 300, 300, ctx);
+  // drawO(100,100, 300, 300, ctx);
+}
 
+// stole this from the internet
+function relMouseCoords(event){
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+    var currentElement = this;
+    do{
+        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+    }
+    while(currentElement = currentElement.offsetParent)
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+    return {x:canvasX, y:canvasY}
+}
+HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;
+
+
+function adjustXYtoUpperLeftOfGridSquare (x, y, width, height){
+  potentialXs = [0, width/3, 2*width/3];
+  potentialYs = [0, height/3, 2*height/3];
+  var adjustedX = Math.max.apply(Math, potentialXs.filter(function(element){return element<= x}));
+  var adjustedY = Math.max.apply(Math, potentialYs.filter(function(element){return element<=y}));
+  return {adjustedX: adjustedX, adjustedY: adjustedY};
 }
 
 function drawX (xCoordinate, yCoordinate, width, height, context){
@@ -48,7 +75,7 @@ function drawCrossBars (width, height, context){
   context.stroke();
 }
 
-// Back End
+// Game Logic
 function Player(symbol){
   this.symbol = symbol;
 }
@@ -207,6 +234,15 @@ Board.prototype.find = function (xCoordinate, yCoordinate){
 
 // Front End
 $(function(){
+  $("#board-canvas").click(function(){
+    var canvas = document.getElementById('board-canvas');
+    coords = canvas.relMouseCoords(event);
+    canvasX = coords.x;
+    canvasY = coords.y;
+    adjustedCoords = adjustXYtoUpperLeftOfGridSquare(canvasX, canvasY, 300,300);
+    console.log(adjustedCoords.adjustedX);
+    console.log(adjustedCoords.adjustedY);
+  });
   var currentGame = new Game();
   $("#playForm").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
   $("#playForm").submit(function(){
