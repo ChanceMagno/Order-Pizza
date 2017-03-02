@@ -16,19 +16,19 @@ function draw(){
 
 // stole this from the internet
 function relMouseCoords(event){
-    var totalOffsetX = 0;
-    var totalOffsetY = 0;
-    var canvasX = 0;
-    var canvasY = 0;
-    var currentElement = this;
-    do{
-        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
-        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
-    }
-    while(currentElement = currentElement.offsetParent)
-    canvasX = event.pageX - totalOffsetX;
-    canvasY = event.pageY - totalOffsetY;
-    return {x:canvasX, y:canvasY}
+  var totalOffsetX = 0;
+  var totalOffsetY = 0;
+  var canvasX = 0;
+  var canvasY = 0;
+  var currentElement = this;
+  do{
+    totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+    totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+  }
+  while(currentElement = currentElement.offsetParent)
+  canvasX = event.pageX - totalOffsetX;
+  canvasY = event.pageY - totalOffsetY;
+  return {x:canvasX, y:canvasY}
 }
 HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;
 
@@ -232,24 +232,55 @@ Board.prototype.find = function (xCoordinate, yCoordinate){
   }
 }
 
+function mapAdjustedCoordstoSpaceCoordinate(x,y){
+  if(x === 0 && y === 0){
+    return {x: 1, y:1};
+  } else if (x === 100 && y === 0){
+    return {x: 1, y:2};
+  } else if (x === 200 & y === 0){
+    return {x: 1, y:3};
+  } else if (x === 0 && y === 100){
+    return {x: 2, y:1};
+  }  else if (x === 100 && y === 100){
+    return {x: 2, y:2};
+  } else if (x === 200 && y === 100){
+    return {x: 2, y:3};
+  } else if (x === 0 && y === 200){
+    return {x: 3, y:1};
+  } else if (x === 100 && y === 200){
+    return {x: 3, y:2};
+  } else if (x === 200 && y === 200){
+    return {x: 3, y:3};
+  } else{
+    console.log("This should never happen.");
+  }
+}
+
 // Front End
 $(function(){
-  $("#board-canvas").click(function(){
-    var canvas = document.getElementById('board-canvas');
-    coords = canvas.relMouseCoords(event);
-    canvasX = coords.x;
-    canvasY = coords.y;
-    adjustedCoords = adjustXYtoUpperLeftOfGridSquare(canvasX, canvasY, 300,300);
-    console.log(adjustedCoords.adjustedX);
-    console.log(adjustedCoords.adjustedY);
-  });
   var currentGame = new Game();
   $("#playForm").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
-  $("#playForm").submit(function(){
+  $("#board-canvas").click(function(){
     event.preventDefault();
     if(!currentGame.isOver()){
-      var desiredXusrInput = parseInt($("#desiredXInput").val());
-      var desiredYusrInput = parseInt($("#desiredYInput").val());
+      var canvas = document.getElementById('board-canvas');
+      var ctx = canvas.getContext('2d');
+      var width = 300;
+      var height = 300;
+      coords = canvas.relMouseCoords(event);
+      canvasX = coords.x;
+      canvasY = coords.y;
+      adjustedCoords = adjustXYtoUpperLeftOfGridSquare(canvasX, canvasY, width, height);
+      console.log(adjustedCoords);
+      if(currentGame.currentPlayer.symbol === "X"){
+        drawX(adjustedCoords.adjustedX, adjustedCoords.adjustedY, width, height, ctx);
+      } else{
+        drawO(adjustedCoords.adjustedX, adjustedCoords.adjustedY, width, height, ctx);
+      }
+
+      var desiredCoords = mapAdjustedCoordstoSpaceCoordinate(adjustedCoords.adjustedX, adjustedCoords.adjustedY);
+      var desiredXusrInput = desiredCoords.x;
+      var desiredYusrInput = desiredCoords.y;
       currentGame.runTurn(desiredXusrInput, desiredYusrInput);
       if(currentGame.isOver()){
         $("#playForm").hide();
