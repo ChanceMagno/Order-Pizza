@@ -41,8 +41,10 @@ A web application to play tic tac toe...
 |integrate game logic w/visual logic|play game|visuals working in sync with game|
 |Determine whether one-player mode is selected|1 Player?|True|
 |Determine which difficulty level the single player has selected|hard|hard|
-|Implement the behavior of the computer in easy mode if player selected easy|easy|computer is player2 and chooses a non-marked space at random to mark|
-|Implement the behavior of the computer in hard mode if player selected easy|easy|computer is player2 and chooses the optimal non-marked space to mark|
+|If easy mode was selected, make the program act as player2|Player2 turn|Algorithm selects and executes a move, then sets the turn back to player1|
+|If easy mode was selected and it's the computer's turn, the computer selects an available space at random|Easy mode + computer's turn| returns SpaceB|
+|If easy mode was selected and an available space has been selected, mark it and draw an O there|Available space selected|Marks it and draws O there|
+|Implement the behavior of the computer in hard mode if player selected hard|hard|computer is player2 and chooses the optimal non-marked space to mark|
 
 ## Setup/Installation Requirements
 

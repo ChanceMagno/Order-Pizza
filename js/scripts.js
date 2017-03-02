@@ -28,6 +28,10 @@ function relMouseCoords(event){
 }
 HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;
 
+var getRandomInt = function (min, max) { // also stole this one shamelessly from the internet
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 function adjustXYtoUpperLeftOfGridSquare (x, y, width, height){
   var potentialXs = [0, width/3, 2*width/3];
@@ -73,15 +77,19 @@ function drawCrossBars (width, height, context){
 }
 
 // Game Logic
+
+
+
 function Player(symbol){
   this.symbol = symbol;
 }
 
-function Game(){
+function Game(playMode){
   this.player1 = new Player("X");
   this.player2 = new Player("O");
   this.currentBoard = new Board();
   this.currentPlayer = this.player1;
+  this.playMode = playMode;
 }
 
 Game.prototype.reportCurrentPlayer = function(){
@@ -92,25 +100,60 @@ Game.prototype.reportCurrentPlayer = function(){
   }
 }
 
+Game.prototype.runEasyAI = function(width, height, context){
+  var availableSpaces = this.currentBoard.getAvailableSpaces();
+  var currentRandomIndex = getRandomInt(0, availableSpaces.length-1);
+  availableSpaces[currentRandomIndex].mark("O");
+  drawO(availableSpaces[currentRandomIndex].xCoordinate, availableSpaces[currentRandomIndex].yCoordinate, width, height, context);
+  this.currentPlayer = this.player1;
+}
+
 Game.prototype.runTurn = function(canvas, context, coords, width, height){
 
-  // mark a desired space with current player's symbol iff that space is available
-  if (this.currentBoard.find(coords.x, coords.y).isAvailable()){
-    this.currentBoard.find(coords.x, coords.y).mark(this.currentPlayer.symbol);
-    console.log("got here");
-
-    // console.log(adjustedCoords);
-    drawShape(this.currentPlayer.symbol, coords, width, height, context);
-    // assign current player to whichever player is not the current player
-    if (this.currentPlayer === this.player1){
-      this.currentPlayer = this.player2;
+  if(this.playMode === "easy"){
+    if (this.currentPlayer === this.player2){
+      this.runEasyAI(width, height, context);
     } else{
-      this.currentPlayer = this.player1;
+      if (this.currentBoard.find(coords.x, coords.y).isAvailable()){
+        this.currentBoard.find(coords.x, coords.y).mark(this.currentPlayer.symbol);
+        console.log("got here");
+        console.log(this.currentPlayer.symbol);
+        drawShape(this.currentPlayer.symbol, coords, width, height, context);
+        console.log("did this");
+        // assign current player to whichever player is not the current player
+        if (this.currentPlayer === this.player1){
+          this.currentPlayer = this.player2;
+          console.log("did this as well");
+        } else{
+          this.currentPlayer = this.player1;
+        }
+      } else{
+        alert("Spot full. Please pick an available spot.");
+      }
     }
   } else{
-    alert("Spot full. Please pick an available spot.");
+    // mark a desired space with current player's symbol iff that space is available
+    if (this.currentBoard.find(coords.x, coords.y).isAvailable()){
+      this.currentBoard.find(coords.x, coords.y).mark(this.currentPlayer.symbol);
+      console.log("got here");
+
+      // console.log(adjustedCoords);
+      drawShape(this.currentPlayer.symbol, coords, width, height, context);
+      // assign current player to whichever player is not the current player
+      console.log(this.currentBoard.getAvailableSpaces());
+
+      if (this.currentPlayer === this.player1){
+        this.currentPlayer = this.player2;
+      } else{
+        this.currentPlayer = this.player1;
+      }
+    } else{
+      alert("Spot full. Please pick an available spot.");
+    }
   }
 }
+
+
 
 Game.prototype.isTurn = function(player){
   return (this.currentPlayer === player);
@@ -161,6 +204,11 @@ function Board (){
   this.spaceG = new Space(0,200);
   this.spaceH = new Space(100,200);
   this.spaceI = new Space(200,200);
+  this.spaces = [this.spaceA, this.spaceB, this.spaceC, this.spaceD, this.spaceE, this.spaceF, this.spaceG, this.spaceH, this.spaceI];
+}
+
+Board.prototype.getAvailableSpaces = function (){
+  return this.spaces.filter(function(space){return space.symbol==""});
 }
 
 
@@ -243,7 +291,8 @@ function drawShape(symbol, coords, width, height, context){
 
 // Front End
 $(function(){
-  var currentGame = new Game();
+  var mode = "easy";
+  var currentGame = new Game(mode);
   var width = 300;
   var height = 300;
   $("#playDiv").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
