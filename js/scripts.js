@@ -4,14 +4,10 @@
 window.onload = draw;
 function draw(){
   var canvas = document.getElementById('board-canvas');
-  console.log(canvas);
   var ctx = canvas.getContext('2d');
   ctx.lineWidth=5;
   ctx.strokeStyle = '#000000';
   drawCrossBars(300,300,ctx);
-  // drawX(100,0, 300, 300, ctx);
-  // drawO(100,0, 300, 300, ctx);
-  // drawO(100,100, 300, 300, ctx);
 }
 
 // stole this from the internet
@@ -151,15 +147,15 @@ Space.prototype.isAvailable  = function(){
 }
 
 function Board (){
-  this.spaceA = new Space(1,1);
-  this.spaceB = new Space(1,2);
-  this.spaceC = new Space(1,3);
-  this.spaceD = new Space(2,1);
-  this.spaceE = new Space(2,2);
-  this.spaceF = new Space(2,3);
-  this.spaceG = new Space(3,1);
-  this.spaceH = new Space(3,2);
-  this.spaceI = new Space(3,3);
+  this.spaceA = new Space(0,0);
+  this.spaceB = new Space(100,0);
+  this.spaceC = new Space(200,0);
+  this.spaceD = new Space(0,100);
+  this.spaceE = new Space(100,100);
+  this.spaceF = new Space(200,100);
+  this.spaceG = new Space(0,200);
+  this.spaceH = new Space(100,200);
+  this.spaceI = new Space(200,200);
 }
 
 
@@ -232,73 +228,48 @@ Board.prototype.find = function (xCoordinate, yCoordinate){
   }
 }
 
-function mapAdjustedCoordstoSpaceCoordinate(x,y){
-  if(x === 0 && y === 0){
-    return {x: 1, y:1};
-  } else if (x === 100 && y === 0){
-    return {x: 1, y:2};
-  } else if (x === 200 & y === 0){
-    return {x: 1, y:3};
-  } else if (x === 0 && y === 100){
-    return {x: 2, y:1};
-  }  else if (x === 100 && y === 100){
-    return {x: 2, y:2};
-  } else if (x === 200 && y === 100){
-    return {x: 2, y:3};
-  } else if (x === 0 && y === 200){
-    return {x: 3, y:1};
-  } else if (x === 100 && y === 200){
-    return {x: 3, y:2};
-  } else if (x === 200 && y === 200){
-    return {x: 3, y:3};
+function drawShape(symbol, coords, width, height, context){
+  if(symbol === "X"){
+    drawX(coords.adjustedX, coords.adjustedY, width, height, context);
   } else{
-    console.log("This should never happen.");
+    drawO(coords.adjustedX, coords.adjustedY, width, height, context);
   }
 }
 
 // Front End
 $(function(){
   var currentGame = new Game();
-  $("#playForm").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
+  var width = 300;
+  var height = 300;
+  $("#playDiv").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
   $("#board-canvas").click(function(){
     event.preventDefault();
     if(!currentGame.isOver()){
       var canvas = document.getElementById('board-canvas');
       var ctx = canvas.getContext('2d');
-      var width = 300;
-      var height = 300;
       coords = canvas.relMouseCoords(event);
-      canvasX = coords.x;
-      canvasY = coords.y;
-      adjustedCoords = adjustXYtoUpperLeftOfGridSquare(canvasX, canvasY, width, height);
-      console.log(adjustedCoords);
-      if(currentGame.currentPlayer.symbol === "X"){
-        drawX(adjustedCoords.adjustedX, adjustedCoords.adjustedY, width, height, ctx);
-      } else{
-        drawO(adjustedCoords.adjustedX, adjustedCoords.adjustedY, width, height, ctx);
-      }
-
-      var desiredCoords = mapAdjustedCoordstoSpaceCoordinate(adjustedCoords.adjustedX, adjustedCoords.adjustedY);
-      var desiredXusrInput = desiredCoords.x;
-      var desiredYusrInput = desiredCoords.y;
-      currentGame.runTurn(desiredXusrInput, desiredYusrInput);
+      adjustedCoords = adjustXYtoUpperLeftOfGridSquare(coords.x, coords.y, width, height);
+      drawShape(currentGame.currentPlayer.symbol, adjustedCoords, width, height, ctx);
+      currentGame.runTurn(adjustedCoords.adjustedX, adjustedCoords.adjustedY);
       if(currentGame.isOver()){
-        $("#playForm").hide();
+        $("#playDiv").hide();
+        $("#hiddenResults h2").remove();
         $("#hiddenResults").show();
-        $("#hiddenResults").append("<h2> Congratulations, " + currentGame.sayWhoWon() + "</h2>");
+        $("#hiddenResults").prepend("<h2> Congratulations! " + currentGame.sayWhoWon() + "</h2>");
       } else{
-        $("#playForm").find('h2').first().remove();
-        $("#playForm").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
+        $("#playDiv").find('h2').first().remove();
+        $("#playDiv").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
       }
     } else {
-      $("#playForm").hide();
+      $("#playDiv").hide();
+      $("#hiddenResults h2").remove();
       $("#hiddenResults").show();
-      $("#winnerDisplay").append("<h2> Congratulations!" + currentGame.sayWhoWon() + "</h2>");
+      $("#hiddenResults").prepend("<h2> Congratulations! " + currentGame.sayWhoWon() + "</h2>");
     }
   });
   $("#playAgainForm").submit(function(){
     $("#hiddenResults").hide();
-    $("#playForm").show();
+    $("#playDiv").show();
     currentGame = new Game();
     console.log(currentGame);
   });

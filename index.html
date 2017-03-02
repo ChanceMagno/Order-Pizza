@@ -7,28 +7,15 @@
   src="https://code.jquery.com/jquery-3.1.1.js"
   integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
   crossorigin="anonymous"></script>
-  <!-- <script src="js/jquery-3.1.1.js"></script> -->
   <script src="js/scripts.js"></script>
   <title></title>
 </head>
 <body>
   <div class="container">
     <canvas id="board-canvas" width="300" height="300"></canvas>
-    <form id="playForm">
-      <div class="form-group">
-        <label for="desiredXInput">Enter X Coordinate</label>
-        <input type="number" class="form-control" id="desiredXInput" required>
-      </div>
-      <div class="form-group">
-        <label for="">Enter Y Coordinate</label>
-        <input type="number" class="form-control" id="desiredYInput" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Go</button>
-    </form>
+    <div id="playDiv">
+    </div>
     <div id="hiddenResults">
-      <div id="winnerDisplay">
-
-      </div>
       <form id="playAgainForm">
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Play Again</button>
