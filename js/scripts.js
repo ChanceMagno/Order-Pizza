@@ -1,3 +1,36 @@
+//Canvas
+
+window.onload = draw;
+function draw(){
+  var canvas = document.getElementById('board-canvas');
+  console.log(canvas);
+  var ctx = canvas.getContext('2d');
+  ctx.lineWidth=10;
+  ctx.strokeStyle = '#ff0000';
+
+  drawCrossBars(300,300,ctx);
+  // ctx.beginPath();
+ // 	ctx.moveTo(0, 0);
+ // 	ctx.lineTo(0, 300);
+ // 	ctx.lineTo(300, 300);
+  // ctx.lineTo(300, 0);
+ // 	ctx.fillStyle = "rgba(0,0,0,1)";
+ // 	ctx.fill();
+}
+
+function drawCrossBars (width, height, context){
+  context.beginPath();
+  context.moveTo(width/3, 0);
+  context.lineTo(width/3, height);
+  context.moveTo(2*(width/3), height);
+  context.lineTo(2*(width/3),0);
+  context.moveTo(0, height/3);
+  context.lineTo(width, height/3);
+  context.moveTo(width, 2*(height/3));
+  context.lineTo(0, 2*(height/3));
+  context.stroke();
+}
+
 // Back End
 function Player(symbol){
   this.symbol = symbol;
@@ -154,8 +187,6 @@ Board.prototype.find = function (xCoordinate, yCoordinate){
     console.log("something went wrong!");
   }
 }
-
-
 
 // Front End
 $(function(){

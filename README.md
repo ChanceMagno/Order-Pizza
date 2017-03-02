@@ -31,6 +31,14 @@ A web application to play tic tac toe...
 |End game if nobody won but the board is full|O,X,O;X,X,O;O,O,X|Game over. Draw.|
 |If game is over, find out whether a new game is desired|Play again?|Yes|
 |If a new game is desired, create a fresh game|Yes|new game initialized with empty board|
+|create visual display of tic tac toe board|na|board displayed|
+|divide board into 3x3 grid of squares|none|tic tac toe squares are visually identifiable|
+|user click identifies square clicked|clicked "upper left square"|area clicked "upper left"|
+|determine which player clicked|click|recognizes player1|
+|draw "x" into given square|upper left|"x" drawn in upper left square|
+|draw "o" into given square|upper left|"o" drawn in upper left square|
+|draw "x" or "o" dependant on player identity|player2|"o"|
+|integrate game logic w/visual logic|play game|visuals working in sync with game|
 |Determine whether one-player mode is selected|1 Player?|True|
 |Determine which difficulty level the single player has selected|hard|hard|
 |Implement the behavior of the computer in easy mode if player selected easy|easy|computer is player2 and chooses a non-marked space at random to mark|

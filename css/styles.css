@@ -1,3 +1,7 @@
 #hiddenResults{
   display: none;
 }
+
+#board-canvas {
+  align-items: center;
+}
