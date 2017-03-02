@@ -239,7 +239,7 @@ Board.prototype.hasThreeUpDown = function(){
 }
 
 Board.prototype.hasThreeDiagonally = function(){
-  if(this.spaceA.symbol === this.spaceE.symbol && this.spaceI.symbol === this.spaceE && this.spaceE.symbol !== ""){
+  if(this.spaceA.symbol === this.spaceE.symbol && this.spaceI.symbol === this.spaceE.symbol && this.spaceE.symbol !== ""){
     return true;
   } else if(this.spaceG.symbol === this.spaceE.symbol && this.spaceE.symbol === this.spaceC.symbol && this.spaceC.symbol !== ""){
     return true;
@@ -291,7 +291,7 @@ function drawShape(symbol, coords, width, height, context){
 
 // Front End
 $(function(){
-  var mode = "easy";
+  var mode = "asdf";
   var currentGame = new Game(mode);
   var width = 300;
   var height = 300;
