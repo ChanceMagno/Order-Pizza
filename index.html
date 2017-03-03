@@ -14,26 +14,52 @@
   <h1>Order your pizza!</h1>
   <div class="container">
     <form id=pizzaBuilder>
+      <p>
+        Select your pizza size below:
+      </p>
     <div class="radio">
       <label>
         <input type="radio" name="size" value="5" checked>
-        Large
+        Large 15$
       </label>
     </div>
     <div class="radio">
       <label>
         <input type="radio" name="size" value="3">
-        Medium
+        Medium 13$
       </label>
     </div>
     <div class="radio">
       <label>
         <input type="radio" name="size" value="0">
-        Small
+        Small 10$
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input class="toppings" type="radio" name="topping" value="Pepperoni" checked>
+        Pepperoni
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input class="toppings" type="radio" name="topping" value="Pineapple">
+        Pineapple
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input class="toppings" type="radio" name="topping" value="mushrooms">
+        mushrooms
       </label>
     </div>
     <button type="submit" class="btn btn-primary">Get price</button>
     </form>
+    <div class="priceOutput">
+      <ul id="price">
+
+      </ul>
+    </div>
   </div>
 </body>
 </html>
