@@ -13,7 +13,9 @@ A web application to order a pizza...
 
 |Behavior|Input|Output|
 |:---:|:---:|:---:|
-||||
+|Output can determine what size pizza is selected|medium|medium pizza|
+|Output add multiple provided topping(s) to pizza|pepperoni|pepperoni topping added to pizza|
+|output can determine price based on pizza size and amout of toppings selected|medium pizza, pepperoni|$10.00|
 
 
 
