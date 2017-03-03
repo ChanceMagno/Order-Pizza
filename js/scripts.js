@@ -108,22 +108,59 @@ Game.prototype.runEasyAI = function(width, height, context){
   this.currentPlayer = this.player1;
 }
 
+Game.prototype.runHardAI = function(width, height, context){
+  var availableSpaces = this.currentBoard.getAvailableSpaces();
+  if (availableSpaces.length === 8){
+    // player1 just made their opening move
+    var occupiedIndex = this.currentBoard.getIndexOfXOccupiedSpace();
+
+    console.log(occupiedIndex);
+    // console.log(this.currentBoard.spaceI.isCorner);
+    // console.log(typeof occupiedSpace);
+    // console.log(occupiedSpace.isCorner);
+    if(this.currentBoard.spaces[occupiedIndex].isCorner){
+      console.log("this happens");
+      this.currentBoard.spaceE.mark("O");
+      drawO(this.currentBoard.spaceE.xCoordinate, this.currentBoard.spaceE.yCoordinate, width, height, context);
+      this.currentPlayer = this.player1;
+    } else if (this.currentBoard.spaces[occupiedIndex].isCenter){
+      this.currentBoard.spaceA.mark("O");
+      drawO(this.currentBoard.spaceA.xCoordinate, this.currentBoard.spaceA.yCoordinate, width, height, context);
+      this.currentPlayer = this.player1;
+    }
+  }
+}
+
 Game.prototype.runTurn = function(canvas, context, coords, width, height){
 
   if(this.playMode === "easy"){
     if (this.currentPlayer === this.player2){
       this.runEasyAI(width, height, context);
-    } else{
+    }  else{
       if (this.currentBoard.find(coords.x, coords.y).isAvailable()){
         this.currentBoard.find(coords.x, coords.y).mark(this.currentPlayer.symbol);
-        console.log("got here");
-        console.log(this.currentPlayer.symbol);
         drawShape(this.currentPlayer.symbol, coords, width, height, context);
-        console.log("did this");
         // assign current player to whichever player is not the current player
         if (this.currentPlayer === this.player1){
           this.currentPlayer = this.player2;
-          console.log("did this as well");
+        } else{
+          this.currentPlayer = this.player1;
+        }
+      } else{
+        alert("Spot full. Please pick an available spot.");
+      }
+    }
+  } else if (this.playMode === "hard"){
+    if(this.currentPlayer === this.player2){
+      // console.log("got here");
+      this.runHardAI(width, height, context);
+    } else {
+      if (this.currentBoard.find(coords.x, coords.y).isAvailable()){
+        this.currentBoard.find(coords.x, coords.y).mark(this.currentPlayer.symbol);
+        drawShape(this.currentPlayer.symbol, coords, width, height, context);
+        // assign current player to whichever player is not the current player
+        if (this.currentPlayer === this.player1){
+          this.currentPlayer = this.player2;
         } else{
           this.currentPlayer = this.player1;
         }
@@ -180,10 +217,13 @@ Game.prototype.isOver = function(){
   }
 }
 
-function Space(xCoordinate, yCoordinate){
+function Space(xCoordinate, yCoordinate, isEdge, isCorner, isCenter){
   this.xCoordinate = xCoordinate;
   this.yCoordinate = yCoordinate;
   this.symbol = "";
+  this.isEdge = isEdge;
+  this.isCorner = isCorner;
+  this.isCenter = isCenter;
 }
 
 Space.prototype.mark = function(symbol){
@@ -195,20 +235,29 @@ Space.prototype.isAvailable  = function(){
 }
 
 function Board (){
-  this.spaceA = new Space(0,0);
-  this.spaceB = new Space(100,0);
-  this.spaceC = new Space(200,0);
-  this.spaceD = new Space(0,100);
-  this.spaceE = new Space(100,100);
-  this.spaceF = new Space(200,100);
-  this.spaceG = new Space(0,200);
-  this.spaceH = new Space(100,200);
-  this.spaceI = new Space(200,200);
+  this.spaceA = new Space(0,0, false, true, false);
+  this.spaceB = new Space(100,0, true, false, false);
+  this.spaceC = new Space(200,0, false, true, false);
+  this.spaceD = new Space(0,100, true, false, false);
+  this.spaceE = new Space(100,100, false, false, true);
+  this.spaceF = new Space(200,100, true, false, false);
+  this.spaceG = new Space(0,200, false, true, false);
+  this.spaceH = new Space(100,200, true, false, false);
+  this.spaceI = new Space(200,200, false, true, false);
   this.spaces = [this.spaceA, this.spaceB, this.spaceC, this.spaceD, this.spaceE, this.spaceF, this.spaceG, this.spaceH, this.spaceI];
 }
 
 Board.prototype.getAvailableSpaces = function (){
   return this.spaces.filter(function(space){return space.symbol==""});
+}
+
+Board.prototype.getIndexOfXOccupiedSpace = function(){
+  for (var i = 0; i<this.spaces.length; i++){
+    if (this.spaces[i].symbol==="X"){
+      return i;
+    }
+  }
+  return this.spaces.filter(function(space){return space.symbol=="X"});
 }
 
 
@@ -291,8 +340,12 @@ function drawShape(symbol, coords, width, height, context){
 
 // Front End
 $(function(){
-  var mode = "asdf";
+  var mode = "hard";
   var currentGame = new Game(mode);
+  // console.log(currentGame.currentBoard.spaceI.isEdge);
+  // console.log(currentGame.currentBoard.spaceI.isCenter);
+  // console.log(currentGame.currentBoard.spaceI.isCorner);
+
   var width = 300;
   var height = 300;
   $("#playDiv").prepend("<h2>It is " + currentGame.reportCurrentPlayer() + "</h2>");
