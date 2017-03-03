@@ -16,6 +16,25 @@
     <canvas id="board-canvas" width="300" height="300"></canvas>
     <div id="playDiv">
     </div>
+    <div id="modeSelect">
+      <h3>Select a play mode</h3>
+      <form id="modeForm">
+        <div class="radio">
+          <label>
+            <input type="radio" name="mode" value="2-Player">
+            2 Player
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="mode" value="easy">
+            Easy
+          </label>
+          <br>
+          <button type="submit" class="btn btn-success">Play</button>
+        </div>
+      </form>
+    </div>
     <div id="hiddenResults">
       <form id="playAgainForm">
         <div class="form-group">

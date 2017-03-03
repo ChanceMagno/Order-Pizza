@@ -118,7 +118,7 @@ Game.prototype.runHardAI = function(width, height, context){
     // console.log(this.currentBoard.spaceI.isCorner);
     // console.log(typeof occupiedSpace);
     // console.log(occupiedSpace.isCorner);
-    if(this.currentBoard.spaces[occupiedIndex].isCorner){
+    if(this.currentBoard.spaces[occupiedIndex].isCorner || this.currentBoard.spaces[occupiedIndex].isEdge){
       console.log("this happens");
       this.currentBoard.spaceE.mark("O");
       drawO(this.currentBoard.spaceE.xCoordinate, this.currentBoard.spaceE.yCoordinate, width, height, context);
@@ -340,8 +340,16 @@ function drawShape(symbol, coords, width, height, context){
 
 // Front End
 $(function(){
-  var mode = "hard";
-  var currentGame = new Game(mode);
+  $("#modeForm").submit(function(){
+    event.preventDefault();
+    var mode = $("input:radio[name=mode]:checked").val();
+    console.log(mode);
+    $("#modeSelect").hide();
+    $("#playDiv").show();
+    var currentGame = new Game(mode);
+  });
+  // var mode = "hard";
+
   // console.log(currentGame.currentBoard.spaceI.isEdge);
   // console.log(currentGame.currentBoard.spaceI.isCenter);
   // console.log(currentGame.currentBoard.spaceI.isCorner);
