@@ -11,65 +11,96 @@
   <title></title>
 </head>
 <body>
-  <h1>Order your pizza!</h1>
+  <h1>Order your Pizza!</h1>
   <div class="container">
-    <form id=pizzaBuilder>
-      <p>
-        Select your pizza size below:
-      </p>
-    <div class="radio">
-      <label>
-        <input type="radio" name="size" value="5" checked>
-        Large 15$
-      </label>
+    <div class="row">
+      <form id=pizzaBuilder>
+        <p>
+          Select your pizza size below:
+        </p>
+      <div class="radio">
+        <label>
+          <input type="radio" name="size" value="5" checked>
+          Large 15$
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="size" value="3">
+          Medium 13$
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          <input type="radio" name="size" value="0">
+          Small 10$
+        </label>
+      </div>
     </div>
-    <div class="radio">
+    <div class="checkbox">
       <label>
-        <input type="radio" name="size" value="3">
-        Medium 13$
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input type="radio" name="size" value="0">
-        Small 10$
-      </label>
-    </div>
-    <div class="radio">
-      <label>
-        <input class="topping1" type="radio" name="topping1" value="Pepperoni" checked>
+        <input class="topping" type="checkbox" name="topping1" value="3" checked>
         Pepperoni
       </label>
     </div>
-    <div class="radio">
+    <div class="checkbox">
       <label>
-        <input class="topping1" type="radio" name="topping1" value="Pineapple">
+        <input class="topping" type="checkbox" name="topping2" value="4">
+        Bacon
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input class="topping" type="checkbox" name="topping3" value=3>
+        Sausage
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input class="topping" type="checkbox" name="topping4" value="1">
         Pineapple
       </label>
     </div>
-    <div class="radio">
+    <div class="checkbox">
       <label>
-        <input class="topping1" type="radio" name="topping1" value="mushrooms">
-        mushrooms
+        <input class="topping" type="checkbox" name="topping5" value="1">
+        Mushrooms
       </label>
     </div>
-    <div class="radio">
+    <div class="checkbox">
       <label>
-        <input class="topping2" type="radio" name="topping2" value="Pineapple">
-        Pineapple
+        <input class="topping" type="checkbox" name="topping6" value="1" checked>
+        Olives
       </label>
     </div>
-    <div class="radio">
+    <div class="checkbox">
       <label>
-        <input class="topping2" type="radio" name="topping2" value="mushrooms">
-        mushrooms
+        <input class="topping" type="checkbox" name="topping7" value="1">
+        u=Unions
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input class="topping" type="checkbox" name="topping8" value="1">
+        Green peppers
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input class="topping" type="checkbox" name="topping9" value="1">
+        Tomatoes
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input class="topping" type="checkbox" name="topping10" value="2">
+        Extra cheese
       </label>
     </div>
     <button type="submit" class="btn btn-primary">Get price</button>
     </form>
     <div class="priceOutput">
-      <ul id="price">
-
+      <ul id="toppings">
       </ul>
     </div>
   </div>
