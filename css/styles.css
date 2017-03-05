@@ -51,3 +51,12 @@ h1 {
   margin-top: 65px;
   margin-left: 15px;
 }
+
+.buttonControl {
+  text-align: center;
+}
+
+#button {
+  background-color: green;
+  margin-top: 15px;
+}
