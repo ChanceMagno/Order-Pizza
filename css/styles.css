@@ -1,1 +1,46 @@
+img {
+  height: 200px;
+}
 
+p {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+h1 {
+  font-family: cursive;
+  text-align: center;
+
+}
+
+.jumbotron {
+  background-color: red;
+}
+
+
+
+.footer {
+  position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 180px;
+    padding: 1rem;
+    background-color: green;
+    text-align: center;
+}
+
+.toppingList {
+  display: none;
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+#priceOutput {
+  margin-top: 65px;
+  text-align: center;
+}
+
+.col-md-4 {
+  border-spacing: inherit;
+}

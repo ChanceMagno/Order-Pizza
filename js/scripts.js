@@ -14,19 +14,20 @@ Pizza.prototype.pizzaPrice = function() {
 $(function(){
   $("form#pizzaBuilder").submit(function(){
     $("#priceOutput").empty();
-    $("#toppingsList").empty();
-    event.preventDefault();
-    var sizePrice = parseInt($("input:radio[name=size]:checked").val());
-    var selectedToppings= [];
-    $('input[type=checkbox]').each(function(){
-      if (this.checked) {
-        selectedToppings.push($(this).val());
+      $("#toppingsList").empty();
+      event.preventDefault();
+      var sizePrice = parseInt($("input:radio[name=size]:checked").val());
+      var selectedToppings= [];
+        $('input[type=checkbox]').each(function(){
+          if (this.checked) {
+            selectedToppings.push($(this).val());
       }
     })
     newOrder = new Pizza(sizePrice, selectedToppings);
-      $("#priceOutput").append("<p> Your Total is $" + newOrder.pizzaPrice() + "</p>");
+      $("#priceOutput").append("<p> Thank you! Your Total is $" + newOrder.pizzaPrice() + "</p>");
       selectedToppings.forEach(function(selectedtopping){
         $("#toppingsList").append("<li>" + selectedtopping + "</li>");
+          $(".toppingList").show();
 
       })
   });
