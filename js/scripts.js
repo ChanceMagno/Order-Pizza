@@ -6,7 +6,7 @@ function Pizza(size, toppings){
 
 
 Pizza.prototype.pizzaPrice = function() {
-     return this.toppings.length *1.5 + this.size;
+     return (this.toppings.length *1.50 + this.size).toFixed(2);
 }
 
 

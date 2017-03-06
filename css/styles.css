@@ -27,7 +27,11 @@ h1 {
     height: 180px;
     padding: 1rem;
     background-color: green;
-    text-align: center;
+    text-align: left;
+}
+
+a {
+    color: white;
 }
 
 .toppingList {
@@ -50,6 +54,7 @@ h1 {
 .col-md-4 {
   margin-top: 65px;
   margin-left: 15px;
+  background-color: white;
 }
 
 .buttonControl {
