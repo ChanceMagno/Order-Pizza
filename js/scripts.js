@@ -28,7 +28,6 @@ $(function(){
       selectedToppings.forEach(function(selectedtopping){
         $("#toppingsList").append("<li>" + selectedtopping + "</li>");
           $(".toppingList").show();
-
       })
   });
 });
